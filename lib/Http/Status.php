@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace zzt\Http;
 
+/**
+* Http status codes.
+*/
 interface Status
 {
 	public const HTTP_100_CONTINUE = 100;

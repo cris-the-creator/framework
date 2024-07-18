@@ -5,12 +5,20 @@ declare(strict_types=1);
 namespace zzt\Http;
 
 /**
- * Http Request 
+ * Http Request.
  *
  * @author Cristian Cornea <contact@corneascorner.dev>
  */
 readonly class Request
 {
+	/**
+	* @param string $uri
+	* @param string $host
+	* @param array<string, string> $headers
+	* @param string $body
+	* @param array<string, string> $params
+	* @param string $method
+	*/
 	private function __construct(
 		public string $uri = '',
 		public string $host = '',
@@ -21,6 +29,7 @@ readonly class Request
 	) {
 	}
 
+	/** @return Request */
 	public static function fromGlobals(): self
 	{
 		$uri = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);

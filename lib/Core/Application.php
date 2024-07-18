@@ -9,7 +9,7 @@ use Latte;
 use zzt\Exception\ConfigException;
 
 /**
- * Main application
+ * Main application.
  *
  * @author Cristian Cornea <contact@corneascorner.dev>
  */
@@ -20,8 +20,8 @@ final class Application
   private string $currentModule;
 
   /**
-   * @param string[] $config Main application config (from config.php)
-   * @param Latte\Engine $template Template system
+   * @param string[] $config  Main application config (from config.php)
+   * @param Latte\Engine $template  Template system
    */
   private function __construct(
     array $config,
@@ -31,9 +31,9 @@ final class Application
   }
 
   /**
-   * Returns the current module during bootstrap phase
+   * Returns the current module during bootstrap phase.
    *
-   * @return string Name of the current module
+   * @return string  Name of the current module
    */
   public function getCurrentModule(): string
   {
@@ -41,9 +41,9 @@ final class Application
   }
 
   /**
-   * Returns the application
+   * Returns the application.
    *
-   * @return self
+   * @return Application
    */
   public static function getInstance(): self
   {
@@ -56,9 +56,9 @@ final class Application
   /**
    * Init application during bootstrap.
    *
-   * @param string[] $config Main application config (from config.php)
-   * @param Latte\Engine $template Template system
-   * @return self
+   * @param string[] $config  Main application config (from config.php)
+   * @param Latte\Engine $template  Template system
+   * @return Application
    */
   public static function init(array $config, array $modules, Latte\Engine $template): self
   {
@@ -72,9 +72,9 @@ final class Application
   }
 
   /**
-  * Initialized all registered modules
+  * Initialized all registered modules.
   *
-  * @param string[] $modules Registered module
+  * @param string[] $modules  Registered module
   */
   private function initModules(array $modules): void
   {
@@ -86,6 +86,9 @@ final class Application
   }
 }
 
+/**
+* Application config.
+*/
 final class Config
 {
   public readonly string $modulesFolder;

@@ -9,7 +9,7 @@ use zzt\globals\router\Type;
 use zzt\Http;
 
 /**
- * Http router
+ * Http router.
  *
  * @author Cristian Cornea <contact@corneascorner.dev>
  */
@@ -19,6 +19,7 @@ class Router
   private const REGEX_VALID_PARAM = "/:[a-zA-Z0-9-_]+/";
   private const REGEX_ROUTE_PARAM = "[a-zA-Z0-9-_]+";
 
+  /** @var Router */
   private static $instance;
 
   /**
@@ -35,9 +36,9 @@ class Router
   private $routes = [];
 
   /**
-   * Returns the router instance
+   * Returns the router instance.
    *
-   * @return self
+   * @return Router 
    */
   public static function getInstance(): self
   {
@@ -48,20 +49,20 @@ class Router
   }
 
   /**
-   * Add an http route
+   * Add an http route.
    *
-   * @param Type $type The http request type
-   * @param string $route Name of the route
-   * @param string $handler Name of the handler file with the callback function
-   * @param string $module Optional module name (the framework knows how to find it on its own during bootsrap)
+   * @param Type $type  The http request type
+   * @param string $route  Name of the route
+   * @param string $handler  Name of the handler file with the callback function
+   * @param string $function Optional function name for controllers
    * @return void
    */
-  public function add(Type $type, string $route, string $handler, string $module = ''): void
+  public function add(Type $type, string $route, string $handler, string $function = ''): void
   {
     $app = Application::getInstance();
-    if (empty($module)) {
-      $module = $app->getCurrentModule();
-    }
+    $module = $app->getCurrentModule();
+
+    //TODO: Controller setup if function is not empty
 
     $config = $app->config;
     $fullPath = "{$config->basePath}/{$config->modulesFolder}/{$module}/{$handler}";
@@ -79,7 +80,7 @@ class Router
   }
 
   /**
-   * Handle the request and return a response
+   * Handle the request and return a response.
    *
    * @param Http\Request $request The current http request
    * @return Http\Response
@@ -140,6 +141,12 @@ class Router
     );
   }
 
+  /**
+   * Resolve the route
+   *
+   * @param string $route  Given request route
+   * @return string|null
+   */
   private function resolve(string $route): ?string
   {
     foreach ($this->routes as $delimiter => $content) {
@@ -151,6 +158,12 @@ class Router
     return null;
   }
 
+  /**
+   * Creates a regex route for the resolver
+   *
+   * @param string $route  The registered route
+   * @return string|null
+   */
   private function parse(string $route): ?string
   {
     $route = rawurldecode($route);
@@ -185,6 +198,13 @@ class Router
 
     return $final;
   }
+
+  /**
+   * Array with all supported request types.
+   *
+   * @param string[] $route  Array with request type keys
+   * @return array<string, string>
+   */
   private function getAllowHeaders(array $route): array
   {
     $types = array_keys($route);
@@ -208,9 +228,18 @@ final class RouterResponse
     public readonly ?string $module,
     public readonly ?array $params,
     public readonly ?Http\Response $response,
-  ) {
-  }
+  ) {}
 
+  /**
+   * Creates a new router response.
+   *
+   * @param bool $success  Response success
+   * @param string|null $handler  
+   * @param string|null $module  
+   * @param string[] $params  
+   * @param Http\Response|null $response  
+   * @return RouterResponse
+   */
   public static function new(
     bool $success,
     ?string $handler,
